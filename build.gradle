@@ -1,0 +1,80 @@
+import java.text.SimpleDateFormat
+
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.1'
+    }
+}
+
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+group = 'com.tearabite.ftctearabits'
+version = '1.0'
+
+sourceSets {
+    main {
+        java { srcDirs = ["src/java"] }
+        resources { srcDir "src/resources" }
+    }
+}
+
+android {
+    namespace = 'com.tearabite.ftctearabits'
+
+    defaultConfig {
+        minSdkVersion 24
+        productFlavors {
+            biscuit {
+                aarMetadata {
+                    minCompileSdk 24
+                }
+            }
+        }
+    }
+
+    testFixtures {
+        enable true
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.tearabite.ftctearabits'
+            artifactId = 'ftctearabits'
+            version = '1.0'
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.brott.dev/' }
+}
+
+dependencies {
+    implementation 'org.firstinspires.ftc:RobotCore:9.0.1'
+    implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta6'
+    implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta6'
+    implementation 'org.firstinspires.ftc:Vision:9.0.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}

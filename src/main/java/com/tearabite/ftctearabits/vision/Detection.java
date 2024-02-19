@@ -22,7 +22,7 @@ public class Detection {
     public static final Detection INVALID_DETECTION = new Detection(new Size(0, 0), 0);
 
     private double minAreaPx;
-    private double maxAreaPx;
+    private final double maxAreaPx;
     private final Size maxSizePx;
     private double areaPx =  INVALID_AREA;
     private Point centerPx = INVALID_POINT;

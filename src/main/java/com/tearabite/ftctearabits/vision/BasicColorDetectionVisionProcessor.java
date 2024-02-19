@@ -1,5 +1,8 @@
 package com.tearabite.ftctearabits.vision;
 
+import static com.tearabite.ftctearabits.vision.Colors.FTC_BLUE_RANGE;
+import static com.tearabite.ftctearabits.vision.Colors.FTC_RED_RANGE_1;
+import static com.tearabite.ftctearabits.vision.Colors.FTC_RED_RANGE_2;
 import static com.tearabite.ftctearabits.vision.Colors.WHITE;
 import static com.tearabite.ftctearabits.vision.OpenCVUtil.getLargestContour;
 
@@ -17,6 +20,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     public static final Size BLUR_SIZE = new Size(7, 7);
@@ -25,24 +29,29 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     public static final Point ANCHOR = new Point((STRUCTURING_ELEMENT.cols() / 2f), STRUCTURING_ELEMENT.rows() / 2f);
 
     private final Mat blurred = new Mat();
-    private final ScalarRange[] colorRanges;
+    @Getter @Setter private ScalarRange[] colorRanges;
     @Getter private Detection detection;
     private final Mat hsv = new Mat();
-    private final double ignoreSmallerThan;
-    private final double ignoreLargerThan;
     private final Mat mask = new Mat();
     private final Mat tmpMask = new Mat();
 
 
-    public BasicColorDetectionVisionProcessor(double ignoreSmallerThan, double ignoreLargerThan, ScalarRange... colorRanges) {
-        this.ignoreSmallerThan = ignoreSmallerThan;
-        this.ignoreLargerThan = ignoreLargerThan;
+    public BasicColorDetectionVisionProcessor(ScalarRange... colorRanges) {
+
         this.colorRanges = colorRanges;
+    }
+
+    public static BasicColorDetectionVisionProcessor Blue() {
+        return new BasicColorDetectionVisionProcessor(FTC_BLUE_RANGE);
+    }
+
+    public static BasicColorDetectionVisionProcessor Red() {
+        return new BasicColorDetectionVisionProcessor(FTC_RED_RANGE_1, FTC_RED_RANGE_2);
     }
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
-        this.detection = new Detection(new Size(width, height), ignoreSmallerThan, ignoreLargerThan);
+        this.detection = new Detection(new Size(width, height), 0, 0);
     }
 
     @Override
@@ -75,5 +84,21 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
             Point center = detection.getCenterPx();
             canvas.drawCircle((float) center.x, (float) center.y, 10, WHITE);
         }
+    }
+
+    public double getIgnoreSmallerThan() {
+        return this.detection.getIgnoreSmallerThan();
+    }
+
+    public void setIgnoreSmallerThan(double ignoreSmallerThan) {
+        this.detection.setIgnoreSmallerThan(ignoreSmallerThan);
+    }
+
+    public double getIgnoreLargerThan() {
+        return this.detection.getIgnoreLargerThan();
+    }
+
+    public void setIgnoreLargerThan(double ignoreLargerThan) {
+        this.detection.setIgnoreLargerThan(ignoreLargerThan);
     }
 }

@@ -8,6 +8,8 @@ import static com.tearabite.ftctearabits.vision.OpenCVUtil.getBottomLeftOfContou
 import static com.tearabite.ftctearabits.vision.OpenCVUtil.getBottomRightOfContour;
 import static com.tearabite.ftctearabits.vision.OpenCVUtil.getCenterOfContour;
 
+import android.graphics.drawable.Icon;
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
@@ -129,5 +131,21 @@ public class Detection {
     // Get the rightmost bottom corner of the detection
     public Point getBottomRightCornerPx() {
         return bottomRightPx;
+    }
+
+    public void setIgnoreSmallerThan(double ignoreSmallerThan) {
+        this.minAreaPx = maxSizePx.area() * ignoreSmallerThan;
+    }
+
+    public void setIgnoreLargerThan(double ignoreLargerThan) {
+        this.minAreaPx = maxSizePx.area() * ignoreLargerThan;
+    }
+
+    public double getIgnoreSmallerThan() {
+         return this.minAreaPx / this.maxSizePx.area();
+    }
+
+    public double getIgnoreLargerThan() {
+        return this.maxAreaPx / this.maxSizePx.area();
     }
 }

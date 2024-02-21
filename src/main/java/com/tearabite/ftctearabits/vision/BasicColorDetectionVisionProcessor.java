@@ -39,14 +39,19 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
 
 
     public BasicColorDetectionVisionProcessor(ScalarRange... colorRanges) {
-
         this.colorRanges = colorRanges;
     }
 
+    /**
+     * @return a new instance of a color detection vision processor targeting FTC Blue
+     */
     public static BasicColorDetectionVisionProcessor Blue() {
         return new BasicColorDetectionVisionProcessor(FTC_BLUE_RANGE);
     }
 
+    /**
+     * @return a new instance of a color detection vision processor targeting FTC Red
+     */
     public static BasicColorDetectionVisionProcessor Red() {
         return new BasicColorDetectionVisionProcessor(FTC_RED_RANGE_1, FTC_RED_RANGE_2);
     }
@@ -88,18 +93,30 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
         }
     }
 
+    /**
+     * @return the minimum area threshold in pixels
+     */
     public double getMinimumAreaThreshold() {
         return this.detection.getMinimumAreaThreshold();
     }
 
+    /**
+     * @param ignoreSmallerThan the minimum area threshold in pixels
+     */
     public void setMinimumAreaThreshold(double ignoreSmallerThan) {
         this.detection.setMinimumAreaThreshold(ignoreSmallerThan);
     }
 
+    /**
+     * @return the maximum area threshold in pixels
+     */
     public double getMaximumAreaThreshold() {
         return this.detection.getMaximumAreaThreshold();
     }
 
+    /**
+     * @param ignoreLargerThan the maximum area threshold in pixels
+     */
     public void setMaximumAreaThreshold(double ignoreLargerThan) {
         this.detection.setMaximumAreaThreshold(ignoreLargerThan);
     }

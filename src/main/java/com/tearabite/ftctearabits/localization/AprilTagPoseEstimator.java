@@ -9,7 +9,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
@@ -18,19 +17,32 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.security.InvalidParameterException;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class AprilTagPoseEstimator {
 
-    private final Pose2d robotOffset;
+    /*
+    * This class is used to estimate the pose of the robot using the AprilTagDetection object.
+    * The math done here uses only trigonometric functions so that it can be better understood
+    * by students without knowledge of linear algebra or matrix operations.
+    * The math done hre can be visualized using the following Desmos graph:
+    * https://www.desmos.com/calculator/n2iyatwssg
+     */
 
-    public AprilTagPoseEstimator() {
-        this(new Pose2d(new Vector2d(0, 0), 0));
-    }
+    @Getter @Setter @Builder.Default  private Pose2d robotOffset = new Pose2d(0,0,0);
 
-    public AprilTagPoseEstimator(Pose2d robotOffset) {
-        this.robotOffset = robotOffset;
-    }
-
-
+    /**
+     * Estimates the pose of the robot using the AprilTagDetection object.
+     * @param detection The AprilTagDetection object
+     * @return The estimated pose of the robot
+     */
     public Pose2d estimatePose(AprilTagDetection detection) {
         if (detection == null || detection.metadata == null || detection.metadata.fieldPosition == null || detection.ftcPose == null) {
             throw new InvalidParameterException();
@@ -51,6 +63,19 @@ public class AprilTagPoseEstimator {
                 fieldOrientation.w);
     }
 
+    /**
+     * Estimates the pose of the robot using the AprilTagDetection object.
+     * @param yaw The rotation about Z of the AprilTag within the camera's frame.
+     * @param bearing The angle between line projected to center of the april tag and the camera's center projection line.
+     * @param range The distance from the center of the camera lens to the center of the AprilTag.
+     * @param Tx The x position (in FTC field coordinates) of the AprilTag
+     * @param Ty The y position (in FTC field coordinates) of the AprilTag
+     * @param Ta The a component of the quaternion describing the orientation of the AprilTag
+     * @param Tb The b component of the quaternion describing the orientation of the AprilTag
+     * @param Tc The c component of the quaternion describing the orientation of the AprilTag
+     * @param Td The d component of the quaternion describing the orientation of the AprilTag
+     * @return The estimated pose of the robot. Heading is reported in radians.
+     */
     private Pose2d estimatePose(double yaw, double bearing, double range, double Tx, double Ty, double Ta, double Tb, double Tc, double Td) {
         double aprilTagHeading = getTYaw(Ta, Tb, Tc, Td);
         double cameraRotation = ((PI / 2) - aprilTagHeading + yaw);

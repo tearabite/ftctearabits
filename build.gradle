@@ -8,8 +8,10 @@ buildscript {
     }
 }
 
-
+apply plugin: 'maven-publish'
 apply plugin: 'com.android.library'
+
+group = 'com.github.tearabite'
 
 android {
     namespace = 'com.tearabite.ftctearabits'

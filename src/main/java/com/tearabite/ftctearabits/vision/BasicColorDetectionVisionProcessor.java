@@ -1,9 +1,10 @@
 package com.tearabite.ftctearabits.vision;
 
-import static com.tearabite.ftctearabits.vision.Colors.FTC_BLUE_RANGE;
-import static com.tearabite.ftctearabits.vision.Colors.FTC_RED_RANGE_1;
-import static com.tearabite.ftctearabits.vision.Colors.FTC_RED_RANGE_2;
-import static com.tearabite.ftctearabits.vision.Colors.WHITE;
+import static com.tearabite.ftctearabits.graphics.LinePaint.WHITE;
+import static com.tearabite.ftctearabits.vision.Detection.PropertyScale.Pixels;
+import static com.tearabite.ftctearabits.vision.FTCColors.FTC_BLUE_RANGE;
+import static com.tearabite.ftctearabits.vision.FTCColors.FTC_RED_RANGE_1;
+import static com.tearabite.ftctearabits.vision.FTCColors.FTC_RED_RANGE_2;
 import static com.tearabite.ftctearabits.vision.OpenCVUtil.getLargestContour;
 
 import android.graphics.Canvas;
@@ -29,11 +30,12 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     public static final Point ANCHOR = new Point((STRUCTURING_ELEMENT.cols() / 2f), STRUCTURING_ELEMENT.rows() / 2f);
 
     private final Mat blurred = new Mat();
-    @Getter @Setter private ScalarRange[] colorRanges;
-    @Getter private Detection detection;
     private final Mat hsv = new Mat();
     private final Mat mask = new Mat();
     private final Mat tmpMask = new Mat();
+
+    @Getter @Setter private ScalarRange[] colorRanges;
+    @Getter private Detection detection;
 
 
     public BasicColorDetectionVisionProcessor(ScalarRange... colorRanges) {
@@ -51,7 +53,7 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
-        this.detection = new Detection(new Size(width, height), 0, 0);
+        this.detection = Detection.builder().frameSize(new Size(width, height)).build();
     }
 
     @Override
@@ -81,24 +83,24 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
         if (detection != null && detection.isValid()) {
-            Point center = detection.getCenterPx();
+            Point center = detection.getCenter();
             canvas.drawCircle((float) center.x, (float) center.y, 10, WHITE);
         }
     }
 
-    public double getIgnoreSmallerThan() {
-        return this.detection.getIgnoreSmallerThan();
+    public double getMinimumAreaThreshold() {
+        return this.detection.getMinimumAreaThreshold();
     }
 
-    public void setIgnoreSmallerThan(double ignoreSmallerThan) {
-        this.detection.setIgnoreSmallerThan(ignoreSmallerThan);
+    public void setMinimumAreaThreshold(double ignoreSmallerThan) {
+        this.detection.setMinimumAreaThreshold(ignoreSmallerThan);
     }
 
-    public double getIgnoreLargerThan() {
-        return this.detection.getIgnoreLargerThan();
+    public double getMaximumAreaThreshold() {
+        return this.detection.getMaximumAreaThreshold();
     }
 
-    public void setIgnoreLargerThan(double ignoreLargerThan) {
-        this.detection.setIgnoreLargerThan(ignoreLargerThan);
+    public void setMaximumAreaThreshold(double ignoreLargerThan) {
+        this.detection.setMaximumAreaThreshold(ignoreLargerThan);
     }
 }

@@ -1,7 +1,6 @@
 package com.tearabite.ftctearabits.vision;
 
 import static com.tearabite.ftctearabits.graphics.LinePaint.WHITE;
-import static com.tearabite.ftctearabits.vision.Detection.PropertyScale.Pixels;
 import static com.tearabite.ftctearabits.vision.FTCColors.FTC_BLUE_RANGE;
 import static com.tearabite.ftctearabits.vision.FTCColors.FTC_RED_RANGE_1;
 import static com.tearabite.ftctearabits.vision.FTCColors.FTC_RED_RANGE_2;

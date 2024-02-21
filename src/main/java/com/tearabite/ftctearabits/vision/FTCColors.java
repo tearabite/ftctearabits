@@ -1,7 +1,5 @@
 package com.tearabite.ftctearabits.vision;
 
-import android.graphics.Color;
-
 import org.opencv.core.Scalar;
 public class FTCColors {
     public static Scalar FTC_RED_LOWER = new Scalar(165, 80, 80);

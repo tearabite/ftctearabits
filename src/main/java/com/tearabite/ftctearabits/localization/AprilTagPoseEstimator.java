@@ -76,18 +76,17 @@ public class AprilTagPoseEstimator {
      * @return The estimated pose of the robot. Heading is reported in radians.
      */
     private Pose2d estimatePose(double yaw, double bearing, double range, double Tx, double Ty, double Ta, double Tb, double Tc, double Td) {
-        double aprilTagHeading = getTYaw(Ta, Tb, Tc, Td);
-        double cameraRotation = ((PI / 2) - aprilTagHeading + yaw);
-        double cx = Tx + range * cos(bearing) * cos(cameraRotation) + range * sin(bearing) * sin(cameraRotation);
-        double cy = Ty + range * cos(bearing) * sin(cameraRotation) - range * sin(bearing) * cos(cameraRotation);
+        double Tyaw = getTYaw(Ta, Tb, Tc, Td);
+        double ch = (PI / 2) - Tyaw + yaw;
+        double cx = Tx + range * cos(bearing) * cos(ch) + range * sin(bearing) * sin(ch);
+        double cy = Ty + range * cos(bearing) * sin(ch) - range * sin(bearing) * cos(ch);
 
         double offsetX = this.robotOffset.position.x;
         double offsetY = this.robotOffset.position.y;
-        double cameraRotationOnRobot = this.robotOffset.heading.toDouble();
-        double robotRotation = (PI / 2) + aprilTagHeading + yaw - cameraRotationOnRobot;
-        double rx = cx + offsetX * cos(robotRotation) - offsetY * sin(robotRotation);
-        double ry = cy + offsetX * sin(robotRotation) + offsetY * cos(robotRotation);
-        double rh = (yaw - cameraRotationOnRobot + 2 * PI) % (2 * PI);
+        double Cyaw = this.robotOffset.heading.toDouble();
+        double rh = (PI / 2) + Tyaw + yaw - Cyaw;
+        double rx = cx + offsetX * cos(rh) - offsetY * sin(rh);
+        double ry = cy + offsetX * sin(rh) + offsetY * cos(rh);
 
         return new Pose2d(rx, ry, rh);
     }

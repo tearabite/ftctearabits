@@ -32,6 +32,11 @@ android {
         release { }
         debug { }
     }
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 repositories {

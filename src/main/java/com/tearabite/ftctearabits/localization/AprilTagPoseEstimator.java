@@ -6,7 +6,6 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
-import static java.lang.Math.tan;
 
 import com.acmerobotics.roadrunner.Pose2d;
 
@@ -82,13 +81,13 @@ public class AprilTagPoseEstimator {
         double cx = Tx + range * cos(bearing) * cos(cameraRotation) + range * sin(bearing) * sin(cameraRotation);
         double cy = Ty + range * cos(bearing) * sin(cameraRotation) - range * sin(bearing) * cos(cameraRotation);
 
-        double aprilTagX = this.robotOffset.position.x;
-        double aprilTagY = this.robotOffset.position.y;
+        double offsetX = this.robotOffset.position.x;
+        double offsetY = this.robotOffset.position.y;
         double cameraRotationOnRobot = this.robotOffset.heading.toDouble();
         double robotRotation = (PI / 2) + aprilTagHeading + yaw - cameraRotationOnRobot;
-        double rx = cx + aprilTagX * cos(robotRotation) - aprilTagY * sin(robotRotation);
-        double ry = cy + aprilTagX * sin(robotRotation) + aprilTagY * cos(robotRotation);
-        double rh = tan(yaw - cameraRotationOnRobot);
+        double rx = cx + offsetX * cos(robotRotation) - offsetY * sin(robotRotation);
+        double ry = cy + offsetX * sin(robotRotation) + offsetY * cos(robotRotation);
+        double rh = (yaw - cameraRotationOnRobot + 2 * PI) % (2 * PI);
 
         return new Pose2d(rx, ry, rh);
     }

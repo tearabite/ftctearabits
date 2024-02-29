@@ -1,6 +1,10 @@
 package com.tearabite.ftctearabits.vision;
 
 import org.opencv.core.Scalar;
+
+/**
+ * A class containing common HSV color ranges for the FIRST Tech Challenge
+ */
 public class FTCColors {
     public static Scalar FTC_RED_LOWER = new Scalar(165, 80, 80);
     public static Scalar FTC_RED_UPPER = new Scalar(15, 255, 255);

@@ -22,20 +22,37 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * A basic color detection vision processor that detects the largest contour of a specified color
+ */
 public class BasicColorDetectionVisionProcessor implements VisionProcessor {
-    public static final Size BLUR_SIZE = new Size(7, 7);
-    public static final int ERODE_DILATE_ITERATIONS = 2;
-    public static final Mat STRUCTURING_ELEMENT = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
-    public static final Point ANCHOR = new Point((STRUCTURING_ELEMENT.cols() / 2f), STRUCTURING_ELEMENT.rows() / 2f);
+    private static final Mat STRUCTURING_ELEMENT = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+    private static final Point ANCHOR = new Point((STRUCTURING_ELEMENT.cols() / 2f), STRUCTURING_ELEMENT.rows() / 2f);
+
+    /**
+     * The size of the blur kernel
+     */
+    @Getter @Setter private Size blurSize = new Size(7, 7);
+
+    /**
+     * The color ranges to detect
+     */
+    @Getter @Setter private ScalarRange[] colorRanges;
+
+    /**
+     * The detection object
+     */
+    @Getter private Detection detection;
+
+    /**
+     * The number of iterations to erode and dilate the mask
+     */
+    @Getter @Setter private int erodeDilateIterations = 2;
 
     private final Mat blurred = new Mat();
     private final Mat hsv = new Mat();
     private final Mat mask = new Mat();
     private final Mat tmpMask = new Mat();
-
-    @Getter @Setter private ScalarRange[] colorRanges;
-    @Getter private Detection detection;
-
 
     public BasicColorDetectionVisionProcessor(ScalarRange... colorRanges) {
         this.colorRanges = colorRanges;
@@ -62,7 +79,7 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat input, long captureTimeNanos) {
-        Imgproc.GaussianBlur(input, blurred, BLUR_SIZE, 0);
+        Imgproc.GaussianBlur(input, blurred, blurSize, 0);
         Imgproc.cvtColor(blurred, hsv, Imgproc.COLOR_RGB2HSV);
 
         mask.release();
@@ -74,8 +91,8 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
             Core.add(mask, tmpMask, mask);
         }
 
-        Imgproc.erode(mask, mask, STRUCTURING_ELEMENT, ANCHOR, ERODE_DILATE_ITERATIONS);
-        Imgproc.dilate(mask, mask, STRUCTURING_ELEMENT, ANCHOR, ERODE_DILATE_ITERATIONS);
+        Imgproc.erode(mask, mask, STRUCTURING_ELEMENT, ANCHOR, erodeDilateIterations);
+        Imgproc.dilate(mask, mask, STRUCTURING_ELEMENT, ANCHOR, erodeDilateIterations);
 
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -100,10 +117,10 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     }
 
     /**
-     * @param ignoreSmallerThan the minimum area threshold in pixels
+     * @param minimumAreaThreshold the minimum area threshold in pixels
      */
-    public void setMinimumAreaThreshold(double ignoreSmallerThan) {
-        this.detection.setMinimumAreaThreshold(ignoreSmallerThan);
+    public void setMinimumAreaThreshold(double minimumAreaThreshold) {
+        this.detection.setMinimumAreaThreshold(minimumAreaThreshold);
     }
 
     /**
@@ -114,9 +131,9 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     }
 
     /**
-     * @param ignoreLargerThan the maximum area threshold in pixels
+     * @param maximumAreaThreshold the maximum area threshold in pixels
      */
-    public void setMaximumAreaThreshold(double ignoreLargerThan) {
-        this.detection.setMaximumAreaThreshold(ignoreLargerThan);
+    public void setMaximumAreaThreshold(double maximumAreaThreshold) {
+        this.detection.setMaximumAreaThreshold(maximumAreaThreshold);
     }
 }

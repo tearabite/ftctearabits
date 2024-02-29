@@ -12,6 +12,9 @@ import org.opencv.imgproc.Moments;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A utility class for common vision operations
+ */
 public class OpenCVUtil {
 
     public static void drawPoint(Mat img, Point point, Scalar color) {

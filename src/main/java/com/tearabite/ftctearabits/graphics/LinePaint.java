@@ -3,6 +3,9 @@ package com.tearabite.ftctearabits.graphics;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+/**
+ * A class to represent a paint object for drawing lines
+ */
 public class LinePaint extends Paint
 {
     public LinePaint(int color)

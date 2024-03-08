@@ -47,11 +47,11 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
-    //noinspection AnnotationProcessorOnCompilePath
-    compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     implementation 'com.acmerobotics.roadrunner:core:0.5.6'
+    api project(':ielib-core')
 }
 
 task androidSourcesJar(type: Jar) {

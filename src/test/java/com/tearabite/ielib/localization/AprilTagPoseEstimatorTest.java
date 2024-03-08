@@ -65,12 +65,12 @@ class AprilTagPoseEstimatorTest {
                         metadata,
                         new AprilTagPoseFtc(0, 0, 0, 0, 0, 0, 24, -45, 0),
                         new Pose2d(-7.77, 0.505, 0),
-                        new Pose2d(35.5, 18.9, 0)),
+                        new Pose2d(35.5, 52.9, 0)),
                 Arguments.of(
                         metadata,
                         new AprilTagPoseFtc(0, 0, 0, -45, 0, 0, 24, -45, 0),
                         new Pose2d(-7.77, 0.505, 0),
-                        new Pose2d(31.1, 41.3, Math.PI / 4)),
+                        new Pose2d(55.1, 65.3, Math.PI / 4)),
 
                 Arguments.of(
                         metadata,

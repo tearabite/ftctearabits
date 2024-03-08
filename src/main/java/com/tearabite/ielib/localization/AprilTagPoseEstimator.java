@@ -1,7 +1,6 @@
 package com.tearabite.ielib.localization;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.tearabite.ielib.localization.AprilTagPoseEstimatorCore;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
@@ -10,11 +9,16 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.security.InvalidParameterException;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@SuperBuilder(toBuilder=true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class AprilTagPoseEstimator extends AprilTagPoseEstimatorCore {
 
     /*
@@ -24,6 +28,8 @@ public class AprilTagPoseEstimator extends AprilTagPoseEstimatorCore {
     * The math done hre can be visualized using the following Desmos graph:
     * https://www.desmos.com/calculator/n2iyatwssg
      */
+
+    @Setter private Pose2d robotOffset;
 
     /**
      * Estimates the pose of the robot using the AprilTagDetection object.
@@ -47,6 +53,7 @@ public class AprilTagPoseEstimator extends AprilTagPoseEstimatorCore {
                 fieldOrientation.x,
                 fieldOrientation.y,
                 fieldOrientation.z,
-                fieldOrientation.w);
+                fieldOrientation.w,
+                this.robotOffset);
     }
 }

@@ -1,4 +1,4 @@
-package com.tearabite.ftctearabits.common;
+package com.tearabite.ielib.common;
 
 /**
  * Enum for the two alliances in FTC

@@ -1,28 +1,15 @@
-buildscript {
-    ext.kotlin_version = '1.9.0'
-    repositories {
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
-    }
-}
+apply plugin: "com.android.library"
 
-apply plugin: 'maven-publish'
-apply plugin: 'com.android.library'
-
-group = 'com.github.tearabite'
-
+version = "release-SNAPSHOT"
 android {
-    namespace = 'com.tearabite.ftctearabits'
-    compileSdkVersion 29
+//
+    namespace = 'com.tearabite.ielib'
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 24
         //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 28
-        multiDexEnabled true
+        targetSdkVersion 26
     }
 
     compileOptions {
@@ -30,36 +17,44 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    buildTypes {
-        release { }
-        debug { }
-    }
     testOptions {
         unitTests.all {
             useJUnitPlatform()
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 repositories {
     mavenCentral()
-    maven {
-        url = 'https://maven.brott.dev/'
-    }
-    google()
+    maven { url = 'https://maven.brott.dev/' }
+}
+
+ext {
+    dashboard_version = "0.5.6"
+    min_sdk_version = "9.1.0"
 }
 
 dependencies {
-    implementation 'org.firstinspires.ftc:RobotCore:9.1.0'
-    implementation 'org.firstinspires.ftc:Vision:9.1.0'
-
-    implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta6'
-    implementation 'com.acmerobotics.roadrunner:actions:1.0.0-beta6'
-    implementation 'com.acmerobotics.dashboard:dashboard:0.4.15'
+    api "org.firstinspires.ftc:RobotCore:$min_sdk_version"
+    api "org.firstinspires.ftc:Hardware:$min_sdk_version"
+    api "org.firstinspires.ftc:RobotServer:$min_sdk_version"
+    api "org.firstinspires.ftc:FtcCommon:$min_sdk_version"
+    api "org.firstinspires.ftc:Vision:$min_sdk_version"
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
     //noinspection AnnotationProcessorOnCompilePath
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    implementation 'com.acmerobotics.roadrunner:core:0.5.6'
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = "sources"
+    from android.sourceSets.main.java.srcDirs
 }

@@ -1,4 +1,4 @@
-package com.tearabite.ftctearabits.graphics;
+package com.tearabite.ielib.graphics;
 
 import android.graphics.Color;
 import android.graphics.Paint;

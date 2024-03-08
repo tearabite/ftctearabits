@@ -1,6 +1,6 @@
-package com.tearabite.ftctearabits.vision;
+package com.tearabite.ielib.vision;
 
-import static com.tearabite.ftctearabits.vision.OpenCVUtil.getCenterOfContour;
+import static com.tearabite.ielib.vision.OpenCVUtil.getCenterOfContour;
 
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
@@ -77,7 +77,7 @@ public class Detection {
             return INVALID_POINT;
         }
 
-        Point centerPx = getCenterOfContour(this.contour);
+        Point centerPx = OpenCVUtil.getCenterOfContour(this.contour);
         if (scale == PropertyScale.Pixels) {
             return centerPx;
         }

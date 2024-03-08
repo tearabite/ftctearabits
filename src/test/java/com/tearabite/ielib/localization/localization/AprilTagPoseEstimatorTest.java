@@ -1,9 +1,10 @@
-package com.tearabite.ftctearabits.localization;
+package com.tearabite.ielib.localization.localization;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.tearabite.ielib.localization.AprilTagPoseEstimator;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -19,7 +20,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.security.InvalidParameterException;
 import java.util.stream.Stream;
 
-class AprilTagPoseEstimatorTest {
+public class AprilTagPoseEstimatorTest {
 
     private static final AprilTagMetadata metadata = new AprilTagMetadata(
             2,
@@ -91,14 +92,14 @@ class AprilTagPoseEstimatorTest {
     }
 
     private void assertIsClose(Pose2d a, Pose2d b) {
-        boolean isClose = isClose(a.position.x, b.position.x)
-                && isClose(a.position.y, b.position.y)
-                && isClose(a.heading.toDouble(), b.heading.toDouble());
+        boolean isClose = isClose(a.getX(), b.getX())
+                && isClose(a.getY(), b.getY())
+                && isClose(a.getHeading(), b.getHeading());
 
         if (!isClose) {
             fail(String.format("Expected (%.1f, %.1f, %.1f) to be close to (%.1f, %.1f, %.1f)",
-                    a.position.x, a.position.y, a.heading.toDouble(),
-                    b.position.x, b.position.y, b.heading.toDouble()));
+                    a.getX(), a.getY(), a.getHeading(),
+                    b.getX(), b.getY(), b.getHeading()));
         }
     }
 }

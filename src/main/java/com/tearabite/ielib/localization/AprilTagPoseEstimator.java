@@ -1,4 +1,4 @@
-package com.tearabite.ftctearabits.localization;
+package com.tearabite.ielib.localization;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
@@ -7,7 +7,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 
-import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
@@ -81,9 +81,9 @@ public class AprilTagPoseEstimator {
         double cx = Tx + range * cos(bearing) * cos(ch) + range * sin(bearing) * sin(ch);
         double cy = Ty + range * cos(bearing) * sin(ch) - range * sin(bearing) * cos(ch);
 
-        double offsetX = this.robotOffset.position.x;
-        double offsetY = this.robotOffset.position.y;
-        double Cyaw = this.robotOffset.heading.toDouble();
+        double offsetX = this.robotOffset.getX();
+        double offsetY = this.robotOffset.getY();
+        double Cyaw = this.robotOffset.getHeading();
         double rh = (PI / 2) + Tyaw + yaw - Cyaw;
         double rx = cx + offsetX * cos(rh) - offsetY * sin(rh);
         double ry = cy + offsetX * sin(rh) + offsetY * cos(rh);

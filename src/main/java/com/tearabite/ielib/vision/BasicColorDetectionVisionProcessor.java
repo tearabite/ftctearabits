@@ -1,12 +1,14 @@
-package com.tearabite.ftctearabits.vision;
+package com.tearabite.ielib.vision;
 
-import static com.tearabite.ftctearabits.graphics.LinePaint.WHITE;
-import static com.tearabite.ftctearabits.vision.FTCColors.FTC_BLUE_RANGE;
-import static com.tearabite.ftctearabits.vision.FTCColors.FTC_RED_RANGE_1;
-import static com.tearabite.ftctearabits.vision.FTCColors.FTC_RED_RANGE_2;
-import static com.tearabite.ftctearabits.vision.OpenCVUtil.getLargestContour;
+import static com.tearabite.ielib.graphics.LinePaint.WHITE;
+import static com.tearabite.ielib.vision.FTCColors.FTC_BLUE_RANGE;
+import static com.tearabite.ielib.vision.FTCColors.FTC_RED_RANGE_1;
+import static com.tearabite.ielib.vision.FTCColors.FTC_RED_RANGE_2;
+import static com.tearabite.ielib.vision.OpenCVUtil.getLargestContour;
 
 import android.graphics.Canvas;
+
+import com.tearabite.ielib.graphics.LinePaint;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
@@ -105,7 +107,7 @@ public class BasicColorDetectionVisionProcessor implements VisionProcessor {
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
         if (detection != null && detection.isValid()) {
             Point center = detection.getCenter();
-            canvas.drawCircle((float) center.x, (float) center.y, 10, WHITE);
+            canvas.drawCircle((float) center.x, (float) center.y, 10, LinePaint.WHITE);
         }
     }
 
